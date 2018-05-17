@@ -5,8 +5,8 @@ import android.util.Log;
 
 
 /**
-@Date : 2015年2月9日
-@Author : Zhan Yu
+@Date :
+@Author :
 @Description : 打印信息
  */
 public class Debugger

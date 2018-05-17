@@ -9,6 +9,7 @@ import android.text.TextUtils;
 
 import com.sky_wf.chinachat.R;
 import com.sky_wf.chinachat.utils.Constansts;
+import com.sky_wf.chinachat.utils.Debugger;
 import com.sky_wf.chinachat.utils.SharedUtils;
 
 /**
@@ -24,6 +25,7 @@ public class SplashActivity extends BaseActivity
     private final String RUN_COUNT = "RUN_COUNT";
     private final int MSG_LOGIN = 0;
     private final int MSG_MAIN = 1;
+    private final String TAG = "SplashActivity";
     private Handler mHandler = new Handler()
     {
         @Override
@@ -50,6 +52,7 @@ public class SplashActivity extends BaseActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        Debugger.d(TAG, ">>onCreate<<");
         mContext = this;
         runCount = SharedUtils
                 .getInstance(mContext)

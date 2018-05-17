@@ -20,6 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="OnTabClicked"
             android:padding="3dp">
 
             <RelativeLayout
@@ -32,7 +33,6 @@
                     android:id="@+id/img_chinachat"
                     android:layout_width="wrap_content"
                     android:layout_height="28dp"
-                    android:layout_centerHorizontal="true"
                     android:focusable="false"
                     android:scaleType="centerInside"
                     android:src="@drawable/tab_chinachat" />
@@ -45,23 +45,22 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="3dp"
                     android:gravity="center"
-                    android:text="喵信"
+                    android:text="@string/msg_title"
                     android:textColor="#9A9A9A"
                     android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/unread_msg_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginRight="15dp"
                     android:background="@drawable/aii"
                     android:gravity="center"
                     android:text="10"
-                    android:textSize="12sp"
                     android:textColor="@color/white"
-                    android:visibility="gone"
-                    />
+                    android:textSize="8sp"
+                    android:visibility="gone" />
             </RelativeLayout>
         </RelativeLayout>
 
@@ -71,6 +70,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="OnTabClicked"
             android:padding="3dp">
 
             <RelativeLayout
@@ -86,7 +86,7 @@
                     android:layout_centerHorizontal="true"
                     android:focusable="false"
                     android:scaleType="centerInside"
-                    android:src="@drawable/tab_friend"/>
+                    android:src="@drawable/tab_friend" />
 
                 <TextView
                     android:id="@+id/txt_friend"
@@ -96,23 +96,22 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="3dp"
                     android:gravity="center"
-                    android:text="通讯录"
+                    android:text="@string/friend_title"
                     android:textColor="#9A9A9A"
                     android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/unread_friend_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginRight="15dp"
                     android:background="@drawable/aii"
                     android:gravity="center"
                     android:text="10"
-                    android:textSize="12sp"
                     android:textColor="@color/white"
-                    android:visibility="gone"
-                    />
+                    android:textSize="8sp"
+                    android:visibility="gone" />
             </RelativeLayout>
         </RelativeLayout>
 
@@ -122,6 +121,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="OnTabClicked"
             android:padding="3dp">
 
             <RelativeLayout
@@ -147,7 +147,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="3dp"
                     android:gravity="center"
-                    android:text="发现"
+                    android:text="@string/find_title"
                     android:textColor="#9A9A9A"
                     android:textSize="12sp" />
 
@@ -160,9 +160,8 @@
                     android:background="@drawable/aii"
                     android:gravity="center"
                     android:text=""
-                    android:textSize="12sp"
                     android:textColor="@color/white"
-                    />
+                    android:textSize="12sp" />
             </RelativeLayout>
         </RelativeLayout>
 
@@ -172,6 +171,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="OnTabClicked"
             android:padding="3dp">
 
             <RelativeLayout
@@ -197,7 +197,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="3dp"
                     android:gravity="center"
-                    android:text="我的"
+                    android:text="@string/profile_title"
                     android:textColor="#9A9A9A"
                     android:textSize="12sp" />
 
@@ -210,8 +210,8 @@
                     android:background="@drawable/aii"
                     android:gravity="center"
                     android:text=""
-                    android:textSize="12sp"
                     android:textColor="@color/white"
+                    android:textSize="12sp"
 
                     />
             </RelativeLayout>

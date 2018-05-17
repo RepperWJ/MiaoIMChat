@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">ChinaChat</string>
+    <string name="app_name">喵信</string>
+    <string name="msg_title">喵信</string>
+    <string name="friend_title">通讯录</string>
+    <string name="find_title">发现</string>
+    <string name="profile_title">我的</string>
 </resources>

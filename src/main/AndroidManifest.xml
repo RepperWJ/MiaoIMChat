@@ -43,6 +43,9 @@
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".activity.RegisterActivity"
+            android:launchMode="singleTask"></activity>
         <!--<activity android:name=".activity.SplashActivity"-->
         <!--android:launchMode="singleTask"></activity>-->
 
