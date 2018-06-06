@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.sky_wf.chinachat.R;
+import com.sky_wf.chinachat.activity.base.BaseActivity;
 import com.sky_wf.chinachat.utils.Constansts;
 import com.sky_wf.chinachat.utils.Debugger;
 import com.sky_wf.chinachat.utils.SharedUtils;
@@ -76,6 +77,16 @@ public class SplashActivity extends BaseActivity
         {
             mHandler.sendEmptyMessageDelayed(MSG_LOGIN,5000);
         }
+    }
+
+    @Override
+    protected void initTitle() {
+
+    }
+
+    @Override
+    protected void setListener() {
+
     }
 
     private void handleLogin()
