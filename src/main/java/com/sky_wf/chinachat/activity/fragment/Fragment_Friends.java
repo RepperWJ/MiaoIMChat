@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sky_wf.chinachat.R;
-import com.sky_wf.chinachat.activity.BaseFragment;
+import com.sky_wf.chinachat.activity.base.BaseFragment;
 import com.sky_wf.chinachat.utils.Debugger;
 
 /**

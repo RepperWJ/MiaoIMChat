@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sky_wf.chinachat"
-       android:versionCode="1000002"
-    android:versionName="1.0.2">
-    <!-- Required -->
+       android:versionCode="1000001"
+    android:versionName="1.0.1">
+    <!--环信权限 -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -21,39 +21,34 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <!--Bmod短信权限-->
+    <!--获取GSM（2g）、WCDMA（联通3g）等网络状态的信息  -->
+    <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
+    <!--获取wifi网络状态的信息 -->
+    <!--<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />-->
+    <!--允许读取手机状态 -->
+    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
+    <!-- 其他权限 短信 -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.WRITE_SMS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name="com.sky_wf.chinachat.MyApplication"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".activity.SplashActivity"
-            android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activity.LoginActivity"
-            android:launchMode="singleTask"></activity>
-        <activity
-            android:name=".activity.MainActivity"
-            android:launchMode="singleTask"></activity>
-        <activity
-            android:name=".activity.RegisterActivity"
-            android:launchMode="singleTask"></activity>
-        <!--<activity android:name=".activity.SplashActivity"-->
-        <!--android:launchMode="singleTask"></activity>-->
-
 
         <!-- 设置环信应用的AppKey -->
         <meta-data
             android:name="EASEMOB_APPKEY"
-            android:value="Your AppKey" />
+            android:value="1192180508146440#chinachat" />
         <!-- 声明SDK所需的service SDK核心功能-->
         <service
             android:name="com.hyphenate.chat.EMChatService"
@@ -75,6 +70,29 @@
             </intent-filter>
         </receiver>
 
+        <!--引导页-->
+        <activity
+            android:name=".activity.SplashActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".activity.RegisterActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:launchMode="singleTask"></activity>
+        <activity android:name=".activity.EditUserNameActivity"
+            android:launchMode="singleTask"></activity>
     </application>
 
 </manifest>

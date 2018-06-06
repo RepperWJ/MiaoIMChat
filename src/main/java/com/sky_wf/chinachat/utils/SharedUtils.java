@@ -15,7 +15,7 @@ public class SharedUtils {
     private  static SharedUtils instance  = null;
     private SharedPreferences preferences ;
     private SharedPreferences.Editor editor;
-    private final String FILE_NAME = "default";
+    private static  String FILE_NAME = "shared";
     private final String TAG = "SharedUtils";
     private Context context;
 
@@ -24,7 +24,7 @@ public class SharedUtils {
         if(null==instance)
         {
             instance = new SharedUtils();
-            instance.getDefaultPreferences(context);
+            instance.getSharedPreferences(context,FILE_NAME);
         }
         return instance;
     }

@@ -2,19 +2,21 @@ package com.sky_wf.chinachat.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.sky_wf.chinachat.MyApplication;
 import com.sky_wf.chinachat.R;
-import com.sky_wf.chinachat.utils.Debugger;
+import com.sky_wf.chinachat.activity.base.BaseFragmentActivity;
 import com.sky_wf.chinachat.activity.fragment.Fragment_Discover;
 import com.sky_wf.chinachat.activity.fragment.Fragment_Friends;
 import com.sky_wf.chinachat.activity.fragment.Fragment_Msg;
 import com.sky_wf.chinachat.activity.fragment.Fragment_Porfile;
+import com.sky_wf.chinachat.utils.Constansts;
+import com.sky_wf.chinachat.utils.Debugger;
 
 
 
@@ -33,6 +35,7 @@ public class MainActivity extends BaseFragmentActivity
     private TextView[] txtBottom;//底部txt
     private TextView txt_title;
     private ImageView img_right;
+
     private int currentTabIndex = 0;// 当前Fragment的index
     private int index  = 0;
     private final String TAG = "MainActivity";
@@ -107,23 +110,23 @@ public class MainActivity extends BaseFragmentActivity
         switch (view.getId())
         {
             case R.id.bottom_chinachat:
-                index = 0;
+                index = Constansts.index_Msg;
                 txt_title.setText("喵信");
                 break;
             case R.id.bottom_friend:
-                index = 1;
+                index = Constansts.index_Friend;
                 break;
             case R.id.bottom_discover:
-                index = 2;
+                index = Constansts.index_Discover;
                 break;
             case R.id.bottom_profile:
-                index = 3;
+                index = Constansts.index_Profile;
                 break;
         }
         if(currentTabIndex!=index)
         {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.hide(fragments[index]);
+            transaction.hide(fragments[currentTabIndex]);
             if(!fragments[index].isAdded())
             {
                 transaction.add(R.id.frame_container,fragments[index]);
@@ -159,6 +162,7 @@ public class MainActivity extends BaseFragmentActivity
 //                FragmentManager manager = getSupportFragmentManager();
 //                manager.popBackStack();
 //                return true;
+                MyApplication.exitActivity();
 
         }
         return super.onKeyDown(keyCode, event);
