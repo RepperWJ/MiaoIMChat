@@ -75,4 +75,9 @@ public class Fragment_Friends extends BaseFragment {
         super.onDestroy();
         Debugger.d(TAG,"<<onDestroy>>");
     }
+
+    @Override
+    protected void initView() {
+
+    }
 }

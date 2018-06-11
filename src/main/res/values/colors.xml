@@ -109,4 +109,8 @@
     <color name="commonReminder">#ffbdbab5</color>
     <color name="gray">#ff808080</color>
     <color name="gray2">#ffeef2fb</color>
+    <color name="bg_net_error">#fff3bb</color>
+    <color name="line_net_error">#e3e0d5</color>
+    <color name="bg_chat">#f2f0eb</color>
+
 </resources>

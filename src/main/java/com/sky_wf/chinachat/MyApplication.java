@@ -16,7 +16,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import cn.bmob.newsmssdk.BmobSMS;
+import cn.bmob.v3.Bmob;
+
 
 /**
  * @Date : 2018/6/1
@@ -76,7 +77,7 @@ public class MyApplication extends Application
      */
     private void initBmobSms()
     {
-        BmobSMS.initialize(this, BuildConfig.App_ID);
+        Bmob.initialize(this, BuildConfig.App_ID);
     }
 
     @Override

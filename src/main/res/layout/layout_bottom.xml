@@ -60,7 +60,7 @@
                     android:text="10"
                     android:textColor="@color/white"
                     android:textSize="8sp"
-                    android:visibility="gone" />
+                    android:visibility="invisible" />
             </RelativeLayout>
         </RelativeLayout>
 
@@ -111,7 +111,7 @@
                     android:text="10"
                     android:textColor="@color/white"
                     android:textSize="8sp"
-                    android:visibility="gone" />
+                    android:visibility="invisible" />
             </RelativeLayout>
         </RelativeLayout>
 

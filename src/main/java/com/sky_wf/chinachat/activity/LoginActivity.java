@@ -14,7 +14,7 @@ import com.sky_wf.chinachat.MyApplication;
 import com.sky_wf.chinachat.R;
 import com.sky_wf.chinachat.activity.base.BaseActivity;
 import com.sky_wf.chinachat.chat.entity.LoginExceptionHandle;
-import com.sky_wf.chinachat.chat.listener.LoginRegStateListener;
+import com.sky_wf.chinachat.chat.listener.CallBakcListener;
 import com.sky_wf.chinachat.chat.manager.ChatManager;
 import com.sky_wf.chinachat.utils.Debugger;
 import com.sky_wf.chinachat.utils.Utils;
@@ -32,7 +32,7 @@ import rx.functions.Action1;
  * @Author : WF
  * @Description :登录
  */
-public class LoginActivity extends BaseActivity implements LoginRegStateListener
+public class LoginActivity extends BaseActivity implements CallBakcListener
 {
 
     private final String TAG = "LoginActivity";
@@ -71,7 +71,7 @@ public class LoginActivity extends BaseActivity implements LoginRegStateListener
     {
         etLoginPhone.addTextChangedListener(new TelTextChange());
         etLoginPw.addTextChangedListener(new PwdTextWatch());
-        ChatManager.getInstance().setLoginListener(this);
+        ChatManager.getInstance().setCallBackListener(this);
     }
 
     @Override
@@ -79,7 +79,6 @@ public class LoginActivity extends BaseActivity implements LoginRegStateListener
     {
         super.onResume();
         Debugger.d(TAG, "<<onResume>>");
-
     }
 
     @Override
@@ -133,11 +132,13 @@ public class LoginActivity extends BaseActivity implements LoginRegStateListener
 
     private void gtLogin()
     {
-        if (isNetAvaliable()) {
+        if (isNetAvaliable())
+        {
             ChatManager.getInstance().login(this, etLoginPhone.getText().toString(),
                     etLoginPw.getText().toString());
-        }else {
-            Utils.showLongToast(btnLogin,getString(R.string.net_error));
+        } else
+        {
+            Utils.showLongToast(btnLogin, getString(R.string.net_error));
         }
     }
 

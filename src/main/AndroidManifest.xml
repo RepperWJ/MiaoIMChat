@@ -93,6 +93,9 @@
             android:launchMode="singleTask"></activity>
         <activity android:name=".activity.EditUserNameActivity"
             android:launchMode="singleTask"></activity>
+
+        <activity android:name=".activity.ChatActivity"
+            android:launchMode="singleTask"></activity>
     </application>
 
 </manifest>

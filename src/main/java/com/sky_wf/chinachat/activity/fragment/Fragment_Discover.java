@@ -73,4 +73,9 @@ public class Fragment_Discover extends BaseFragment {
         super.onDestroy();
         Debugger.d(TAG,"<<onDestroy>>");
     }
+
+    @Override
+    protected void initView() {
+
+    }
 }

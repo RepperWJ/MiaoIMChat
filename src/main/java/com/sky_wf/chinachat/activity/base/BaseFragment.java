@@ -1,5 +1,6 @@
 package com.sky_wf.chinachat.activity.base;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,12 +16,21 @@ import com.sky_wf.chinachat.utils.Debugger;
  * @Author : WF
  * @Description :
  */
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
     private final String TAG = "BaseFragment";
+    protected Context context;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context = getActivity();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        initView();
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -35,4 +45,7 @@ public class BaseFragment extends Fragment {
         super.onDestroy();
 
     }
+
+
+    protected abstract void initView();
 }
