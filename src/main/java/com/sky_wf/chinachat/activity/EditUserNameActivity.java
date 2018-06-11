@@ -14,18 +14,24 @@ import android.widget.TextView;
 
 import com.sky_wf.chinachat.R;
 import com.sky_wf.chinachat.activity.base.BaseActivity;
+import com.sky_wf.chinachat.chat.listener.CallBakcListener;
+import com.sky_wf.chinachat.chat.manager.ChatManager;
 import com.sky_wf.chinachat.utils.SharedUtils;
+
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.functions.Action1;
 
 /**
  * @Date : 2018/6/5
  * @Author : WF
  * @Description :用户信息编辑
  */
-public class EditUserNameActivity extends BaseActivity
+public class EditUserNameActivity extends BaseActivity implements CallBakcListener
 {
 
     @BindView(R.id.txt_title)
@@ -48,6 +54,7 @@ public class EditUserNameActivity extends BaseActivity
         ButterKnife.bind(this);
         super.onCreate(savedInstanceState);
         context = this;
+        ChatManager.getInstance().setCallBackListener(this);
     }
 
     @Override
@@ -78,11 +85,28 @@ public class EditUserNameActivity extends BaseActivity
 
     private void gtMain()
     {
+        ChatManager.getInstance().updateNickName(etUsername.getText().toString());
+    }
+
+    @Override
+    public void onSuccess() {
         SharedUtils.getInstance(context).putString("username",
                 etUsername.getText().toString());
-        Intent intent = new Intent(EditUserNameActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
+        Observable.timer(1,TimeUnit.SECONDS).subscribe(new Action1<Long>() {
+            @Override
+            public void call(Long aLong) {
+                Intent intent = new Intent();
+                intent.setClass(EditUserNameActivity.this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+                finish();
+            }
+        });
+    }
+
+    @Override
+    public void onFailed(Exception e) {
+
     }
 
     class UserTextWatcher implements TextWatcher

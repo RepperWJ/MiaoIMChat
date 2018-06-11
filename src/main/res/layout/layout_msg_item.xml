@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/connact_item"
+        style="@style/msg_item"
+        android:layout_height="65dp"
+        android:background="@color/white"
+        android:paddingLeft="12dp">
+
+        <RelativeLayout
+            android:id="@+id/portrait_container"
+            android:layout_width="59dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:baselineAligned="false">
+
+            <ImageView
+                android:id="@+id/connact_item_avatar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/head2" />
+
+            <TextView
+                android:id="@+id/connact_unread_msg_nubmer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/aii"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:orientation="vertical"
+            android:paddingLeft="5dp">
+
+            <TextView
+                android:id="@+id/connact_txt_name"
+                style="@style/MMFontTitleInList"
+                android:text="大喵"
+                android:singleLine="true"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/connact_txt_state"
+                style="@style/MMFontTitleInList"
+                android:layout_below="@+id/connact_txt_name"
+                android:layout_marginTop="5dp"
+                android:textSize="13sp"
+                android:background="@drawable/btn_bg_green"
+                android:text="已读" />
+
+            <TextView
+                android:id="@+id/connact_txt_conntent"
+                style="@style/MMFontTitleInList"
+                android:layout_below="@+id/connact_txt_name"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/connact_txt_state"
+                android:text="明天一起吃饭好不好，就在海雅缤纷城"
+                android:textColor="@color/black1"
+                android:textSize="14sp"
+
+                />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/connact_txt_time"
+            style="@style/MMFontTitleInList"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="top"
+            android:singleLine="true"
+            android:text="10:20"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black2" />
+
+</LinearLayout>

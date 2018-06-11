@@ -12,13 +12,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hyphenate.EMCallBack;
-import com.hyphenate.chat.EMClient;
-import com.sky_wf.chinachat.MyApplication;
 import com.sky_wf.chinachat.R;
 import com.sky_wf.chinachat.activity.base.BaseActivity;
 import com.sky_wf.chinachat.chat.entity.LoginExceptionHandle;
-import com.sky_wf.chinachat.chat.listener.LoginRegStateListener;
+import com.sky_wf.chinachat.chat.listener.CallBakcListener;
 import com.sky_wf.chinachat.chat.listener.SendCodeListener;
 import com.sky_wf.chinachat.chat.manager.ChatManager;
 import com.sky_wf.chinachat.utils.Debugger;
@@ -38,7 +35,7 @@ import rx.functions.Action1;
  * @Author : WF
  * @Description :用户注册
  */
-public class RegisterActivity extends BaseActivity implements LoginRegStateListener, SendCodeListener
+public class RegisterActivity extends BaseActivity implements CallBakcListener, SendCodeListener
 {
 
     @BindView(R.id.img_back)
@@ -65,7 +62,7 @@ public class RegisterActivity extends BaseActivity implements LoginRegStateListe
         ButterKnife.bind(this);
         super.onCreate(savedInstanceState);
         Debugger.d(TAG, "<<onCreate>>");
-        ChatManager.getInstance().setRegisterListener(this);
+        ChatManager.getInstance().setCallBackListener(this);
         ChatManager.getInstance().setCodeListener(this);
     }
 
@@ -171,6 +168,7 @@ public class RegisterActivity extends BaseActivity implements LoginRegStateListe
     @Override
     public void onFailed(Exception e)
     {
+        setButtonEnable(true);
         LoginExceptionHandle.handleErrorMsg(btnCaptcha,e);
     }
 
