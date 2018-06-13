@@ -48,7 +48,7 @@
             <TextView
                 android:id="@+id/connact_txt_name"
                 style="@style/MMFontTitleInList"
-                android:text="好友"
+                android:text=""
                 android:singleLine="true"
                 android:textColor="@color/black" />
 

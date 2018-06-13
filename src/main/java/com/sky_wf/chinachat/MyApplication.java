@@ -1,10 +1,12 @@
 package com.sky_wf.chinachat;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.PowerManager;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
@@ -22,7 +24,6 @@ import java.util.Map;
 
 import cn.bmob.v3.Bmob;
 
-
 /**
  * @Date : 2018/6/1
  * @Author : WF
@@ -36,8 +37,9 @@ public class MyApplication extends Application
     private static List<Activity> activityList;
     public static List<User> users = new ArrayList<>();
     public static List<UserGroupInfo> userGroupInfos = new ArrayList<>();
-    public static Map<String,UserGroupInfo> groupInfoMap = new HashMap<>();
-    public static Map<String,User> userMap = new HashMap<>();
+    public static Map<String, UserGroupInfo> groupInfoMap = new HashMap<>();
+    public static Map<String, User> userMap = new HashMap<>();
+    private static PowerManager.WakeLock wakeLock;
 
     @Override
     public void onCreate()
@@ -136,12 +138,45 @@ public class MyApplication extends Application
         }
     }
 
+    /**
+     * 退出APP
+     */
     public static void exitActivity()
     {
-        if(null != activityList)
-        for(Activity activity:activityList)
+        if (null != activityList)
+            for (Activity activity : activityList)
+            {
+                activity.finish();
+            }
+    }
+
+    /**
+     * 获取屏幕锁，保持屏幕唤醒
+     */
+    public static void acquireWakeLock()
+    {
+        if (null == wakeLock)
         {
-            activity.finish();
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            wakeLock = pm.newWakeLock(
+                    PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE,
+                    "Chinachat:Power");
+            if (null != wakeLock)
+            {
+                wakeLock.acquire();
+            }
+        }
+    }
+
+    /**
+     *释放屏幕锁
+     */
+    public static void releaseWakeLock()
+    {
+        if (wakeLock != null)
+        {
+            wakeLock.release();
+            wakeLock = null;
         }
     }
 }

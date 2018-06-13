@@ -37,7 +37,6 @@ import butterknife.ButterKnife;
  */
 public class MsgListAdapter extends RecyclerView.Adapter<MsgListAdapter.MsgListItemViewHolder>
 {
-    private OnItemClickListener clickListener;
     private List<EMConversation> conversationList;
     private static OnItemClickListener listener;
     private Context context;
@@ -85,23 +84,30 @@ public class MsgListAdapter extends RecyclerView.Adapter<MsgListAdapter.MsgListI
             Log.d("wftt>>>>>>", chat_ID + "<<>>" + group.getGroupName());
         } else
         {
-            chatManager.QueryUser(chat_ID);
-            chatManager.setQueryUserListener(new QueryCallBackListener<User>()
+            if (MyApplication.userMap.containsKey(chat_ID))
             {
-                @Override
-                public void onSucess(User user)
+                User user = MyApplication.userMap.get(chat_ID);
+                itemViewHolder.holder_txt_name.setText(user.getNickName());
+            } else
+            {
+                chatManager.QueryUser(chat_ID);
+                chatManager.setQueryUserListener(new QueryCallBackListener<User>()
                 {
-                    MyApplication.userMap.put(chat_ID, user);
-                    itemViewHolder.holder_txt_name.setText(user.getNickName());
+                    @Override
+                    public void onSucess(User user)
+                    {
+                        MyApplication.userMap.put(chat_ID, user);
+                        itemViewHolder.holder_txt_name.setText(user.getNickName());
 
-                }
+                    }
 
-                @Override
-                public void onFailed()
-                {
+                    @Override
+                    public void onFailed()
+                    {
 
-                }
-            });
+                    }
+                });
+            }
 
         }
 
