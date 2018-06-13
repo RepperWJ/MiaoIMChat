@@ -151,7 +151,7 @@ public class LoginActivity extends BaseActivity implements CallBakcListener
             public void run()
             {
                 Utils.showLongToast(btnLogin, getString(R.string.login_sucess));
-                Observable.timer(3, TimeUnit.SECONDS).subscribe(new Action1<Long>()
+                Observable.timer(2, TimeUnit.SECONDS).subscribe(new Action1<Long>()
                 {
                     @Override
                     public void call(Long aLong)

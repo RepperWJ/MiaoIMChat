@@ -1,20 +1,31 @@
 package com.sky_wf.chinachat.chat.manager;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.exceptions.HyphenateException;
-import com.sky_wf.chinachat.chat.entity.LoginExceptionHandle;
+import com.sky_wf.chinachat.MyApplication;
+import com.sky_wf.chinachat.R;
+import com.sky_wf.chinachat.activity.ChatActivity;
 import com.sky_wf.chinachat.chat.entity.SmsLoginException;
 import com.sky_wf.chinachat.chat.entity.User;
+import com.sky_wf.chinachat.chat.entity.UserGroupInfo;
 import com.sky_wf.chinachat.chat.listener.CallBakcListener;
+import com.sky_wf.chinachat.chat.listener.QueryCallBackListener;
 import com.sky_wf.chinachat.chat.listener.SendCodeListener;
+import com.sky_wf.chinachat.chat.utils.ChatConstants;
 import com.sky_wf.chinachat.utils.BuildConfig;
+import com.sky_wf.chinachat.utils.Constansts;
 import com.sky_wf.chinachat.utils.Debugger;
+import com.sky_wf.chinachat.utils.NetUtils;
 import com.sky_wf.chinachat.utils.SharedUtils;
 import com.sky_wf.chinachat.utils.Utils;
 
@@ -24,9 +35,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
@@ -46,6 +59,7 @@ public class ChatManager
     private final String TAG = "ChatManager";
     private CallBakcListener listener;
     private SendCodeListener codeListener;
+    private QueryCallBackListener<User> queryUserListener;
 
     private ChatManager()
     {
@@ -66,13 +80,25 @@ public class ChatManager
         this.listener = listener;
     }
 
-
     public void setCodeListener(SendCodeListener codeListener)
     {
         this.codeListener = codeListener;
     }
 
-    // 注册用户
+    public void setQueryUserListener(QueryCallBackListener<User> queryUserListener)
+    {
+        this.queryUserListener = queryUserListener;
+    }
+
+    /**
+     * Register
+     * 
+     * @param context
+     * @param view
+     * @param phone
+     * @param pwd
+     * @param code
+     */
     public void createACount(final Context context, final View view, final String phone,
             final String pwd, final String code)
     {
@@ -135,10 +161,10 @@ public class ChatManager
                                                 Debugger.d(TAG, s);
                                                 Utils.showLongToast(view, "注册成功！");
                                                 listener.onSuccess();
-                                                SharedUtils.getInstance(context).putString("phone",
-                                                        phone);
-                                                SharedUtils.getInstance(context).putString("pwd",
-                                                        pwd);
+                                                SharedUtils.getInstance(context)
+                                                        .putString(Constansts.PHONE, phone);
+                                                SharedUtils.getInstance(context)
+                                                        .putString(Constansts.PWD, pwd);
                                             }
                                         });
                             } else
@@ -161,7 +187,12 @@ public class ChatManager
 
     }
 
-    // 发送验证码
+    /**
+     * Send SMS code
+     * 
+     * @param context
+     * @param phone
+     */
     public void sendSmsCode(Context context, String phone)
     {
         if (phone != null)
@@ -184,21 +215,30 @@ public class ChatManager
         }
     }
 
-    // 登录Bmob后台
+    /**
+     * Login
+     * 
+     * @param context
+     * @param phone
+     * @param pwd
+     */
     public void login(final Context context, final String phone, final String pwd)
     {
         User user = new User();
         user.setUsername(phone);
         user.setPassword(pwd);
-        user.login(new SaveListener<User>() {
+        user.login(new SaveListener<User>()
+        {
             @Override
-            public void done(User user, BmobException e) {
-                if(null==e)
+            public void done(User user, BmobException e)
+            {
+                if (null == e)
                 {
                     Debugger.d(TAG, "登录Bmob后台服务器成功！");
-                    loginChatServer(context,phone,pwd);
-                }else {
-                    Debugger.d(TAG, "登录Bmob后台服务器失败！"+e.getMessage()+e.getErrorCode());
+                    loginChatServer(context, phone, pwd);
+                } else
+                {
+                    Debugger.d(TAG, "登录Bmob后台服务器失败！" + e.getMessage() + e.getErrorCode());
                     listener.onFailed(e);
                 }
             }
@@ -206,7 +246,9 @@ public class ChatManager
 
     }
 
-    /**登录环信服务器
+    /**
+     * Login 环信Server
+     * 
      * @param context
      * @param phone
      * @param pwd
@@ -222,8 +264,9 @@ public class ChatManager
                 EMClient.getInstance().chatManager().loadAllConversations();
                 Debugger.d(TAG, "登录环信聊天服务器成功！");
                 listener.onSuccess();
-                SharedUtils.getInstance(context).putString("phone", phone);
-                SharedUtils.getInstance(context).putString("pwd", pwd);
+                SharedUtils.getInstance(context).putString(Constansts.PHONE, phone);
+                SharedUtils.getInstance(context).putString(Constansts.PWD, pwd);
+                SharedUtils.getInstance(context).putBoolean(Constansts.LoginState, true);
             }
 
             @Override
@@ -242,7 +285,7 @@ public class ChatManager
     }
 
     /**
-     * 获取用户最近所有会话（包括单聊和群聊）
+     * load recent Conversation 获取用户最近所有会话（包括单聊和群聊）
      * 
      * @return
      */
@@ -266,6 +309,11 @@ public class ChatManager
 
     }
 
+    /**
+     * Sort Conversations by time 会话列表排序
+     * 
+     * @param list
+     */
     private void sortConversationByLastChatTime(List<EMConversation> list)
     {
         Collections.sort(list, new Comparator<EMConversation>()
@@ -289,25 +337,31 @@ public class ChatManager
         });
     }
 
-    /**更新用户昵称
+    /**
+     * update users info 更新用户昵称
+     * 
      * @param nickname
      */
     public void updateNickName(String nickname)
     {
-        if(null!=getCurrentUser())
+        if (null != getCurrentUser())
         {
             User user = getCurrentUser();
             user.setNickName(nickname);
-            user.update(new UpdateListener() {
+            user.update(new UpdateListener()
+            {
                 @Override
-                public void done(BmobException  e) {
-                    if(null==e)
+                public void done(BmobException e)
+                {
+                    if (null == e)
                     {
                         listener.onSuccess();
-                       Debugger.d(TAG,"updateNickName  success");
-                    } else {
+                        Debugger.d(TAG, "updateNickName  success");
+                    } else
+                    {
                         listener.onFailed(e);
-                        Debugger.d(TAG,"updateNickName failed>>"+e.getErrorCode()+"--"+e.getMessage());
+                        Debugger.d(TAG, "updateNickName failed>>" + e.getErrorCode() + "--"
+                                + e.getMessage());
                     }
                 }
             });
@@ -315,7 +369,9 @@ public class ChatManager
 
     }
 
-    /**获取当前登录用户
+    /**
+     * get current user 获取当前登录用户
+     * 
      * @return
      */
     public User getCurrentUser()
@@ -325,8 +381,219 @@ public class ChatManager
         {
             return user;
         }
-        Debugger.d(TAG,"getCurrentUse is"+user);
+        Debugger.d(TAG, "getCurrentUse is" + user);
         return null;
+    }
+
+    /**
+     * 网络异常
+     * 
+     * @param context
+     */
+    public void openSetNetWork(Context context)
+    {
+        if (null != context)
+        {
+            NetUtils.openSetNetWork(context);
+        }
+        Debugger.d(TAG, "<<openSetNetWork>>" + context);
+    }
+
+    /**
+     * query single user info 查询单个用户信息
+     * 
+     * @param username
+     * @return
+     */
+    public void QueryUser(String username)
+    {
+
+        BmobQuery<User> query = new BmobQuery<>();
+        query.addWhereEqualTo("username", username);
+        query.findObjects(new FindListener<User>()
+        {
+            @Override
+            public void done(List<User> list, BmobException e)
+            {
+                if (null == e)
+                {
+                    if (list.size() > 0)
+                    {
+                        Observable.from(list).take(1).observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Subscriber<User>()
+                                {
+                                    @Override
+                                    public void onCompleted()
+                                    {
+
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable throwable)
+                                    {
+                                        queryUserListener.onFailed();
+                                    }
+
+                                    @Override
+                                    public void onNext(User user)
+                                    {
+                                        queryUserListener.onSucess(user);
+                                        Debugger.d("wftt", "queryUser[0]>>>>" + user + "nickname"
+                                                + user.getNickName());
+                                    }
+                                });
+                    }
+                } else
+                {
+                    Debugger.d(TAG,
+                            "QueryUser failed>>" + e.getErrorCode() + "--" + e.getMessage());
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 获取当前某一会话的未读消息总数
+     * 
+     * @param conversation
+     * @return
+     */
+    public int getUnReadMsgCount(EMConversation conversation)
+    {
+        if (null != conversation)
+        {
+            return conversation.getUnreadMsgCount();
+        }
+        return 0;
+    }
+
+    /**
+     * 获取当前会话的消息总数
+     * 
+     * @param conversation
+     * @return
+     */
+    public int getMsgCount(EMConversation conversation)
+    {
+        if (null != conversation)
+        {
+            return conversation.getAllMsgCount();
+        }
+        return 0;
+    }
+
+    /**
+     * 获取最近的消息
+     * 
+     * @param message
+     * @param context
+     * @return
+     */
+    public String getLastMessageDigest(EMMessage message, Context context)
+    {
+        String digest = "";
+        switch (message.getType())
+        {
+            case LOCATION:
+                break;
+            case IMAGE:
+                digest = MyApplication.res.getString(R.string.picture);
+                break;
+            case TXT:
+                if (!message.getBooleanAttribute(Constansts.MESSAGE_ATTR_IS_VOICE_CALL, false))
+                {
+                    EMTextMessageBody textMessageBody = (EMTextMessageBody) message.getBody();
+                    digest = textMessageBody.getMessage();
+                }
+                break;
+            case VIDEO:
+                digest = MyApplication.res.getString(R.string.video);
+                break;
+            case VOICE:
+                digest = MyApplication.res.getString(R.string.voice);
+                break;
+            case CMD:
+                break;
+            case FILE:
+                digest = MyApplication.res.getString(R.string.file);
+                break;
+            default:
+                return "";
+
+        }
+        return digest;
+    }
+
+    public void updateConversationInfo(List<EMConversation> list)
+    {
+        for (EMConversation conversation : list)
+        {
+            if (conversation.isGroup())
+            {
+                if (!isqueryByID(new UserGroupInfo(), conversation.conversationId()))
+                {
+
+                }
+            } else
+            {
+                if (!isqueryByID(new User(), conversation.conversationId()))
+                {
+                    // 用户信息不存在的情况可以忽略
+                }
+
+            }
+        }
+    }
+
+    private <T> boolean isqueryByID(T t, String usename)
+    {
+        final boolean[] isQuery = { false };
+        BmobQuery<T> query = new BmobQuery<>();
+        query.getObject(usename, new QueryListener<T>()
+        {
+            @Override
+            public void done(T user, BmobException e)
+            {
+                if (e == null)
+                {
+                    isQuery[0] = true;
+                }
+            }
+        });
+        return isQuery[0];
+    }
+
+    private void updateUserInfo(EMConversation conversation)
+    {
+
+    }
+
+    public void gtChat(Context context, EMConversation conversation)
+    {
+        Intent intent = new Intent(context, ChatActivity.class);
+        intent.putExtra(Constansts.User_ID, conversation.conversationId());
+        if (conversation.isGroup())
+        {
+            EMGroup group = EMClient.getInstance().groupManager()
+                    .getGroup(conversation.conversationId());
+            intent.putExtra(Constansts.TYPE, ChatConstants.CHAT_GROUP);
+            intent.putExtra(Constansts.USERNAME, group.getGroupName());
+            intent.putExtra(Constansts.GROUP_NUMBER, group.getMemberCount());
+        } else
+        {
+
+            intent.putExtra(Constansts.TYPE, ChatConstants.CHAT_SINGLE);
+            Log.d("wftt", "usemap -->>" + MyApplication.userMap.get(conversation.conversationId()));
+            Log.d("wftt", "usemap getNickName -->>"
+                    + MyApplication.userMap.get(conversation.conversationId()).getNickName());
+            if (MyApplication.userMap.get(conversation.conversationId()) != null)
+            {
+                intent.putExtra(Constansts.USERNAME,
+                        MyApplication.userMap.get(conversation.conversationId()).getNickName());
+            }
+        }
+        context.startActivity(intent);
     }
 
 }

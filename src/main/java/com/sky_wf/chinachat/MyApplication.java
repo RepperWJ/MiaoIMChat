@@ -8,13 +8,17 @@ import android.content.res.Resources;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
+import com.sky_wf.chinachat.chat.entity.User;
+import com.sky_wf.chinachat.chat.entity.UserGroupInfo;
 import com.sky_wf.chinachat.net.api.API;
 import com.sky_wf.chinachat.utils.BuildConfig;
 import com.sky_wf.chinachat.utils.Debugger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import cn.bmob.v3.Bmob;
 
@@ -30,6 +34,10 @@ public class MyApplication extends Application
     public static Resources res;
     private final String TAG = "MyApplication";
     private static List<Activity> activityList;
+    public static List<User> users = new ArrayList<>();
+    public static List<UserGroupInfo> userGroupInfos = new ArrayList<>();
+    public static Map<String,UserGroupInfo> groupInfoMap = new HashMap<>();
+    public static Map<String,User> userMap = new HashMap<>();
 
     @Override
     public void onCreate()

@@ -13,10 +13,23 @@
     <string name="error_login_aleardy_login">该用户已经登录！</string>
     <string name="send_code">验证码已经发送到您的手机，请注意查收！</string>
     <string name="error_send_code">验证码发送失败！</string>
-    <string name="error_register_phone">请输入正确的手机号！</string>
+    <string name="error_register_phone">请picture输入正确的手机号！</string>
     <string name="login_title">登录</string>
     <string name="login_sucess">登录成功，正在获取数据...</string>
     <string name="login_failed">登录失败</string>
     <string name="net_error">网络连接失败，请检查网络设置！</string>
     <string name="chat_no_msg">暂时没有新消息</string>
+    <string name="picture">[图片信息]</string>
+    <string name="voice">[语音消息]</string>
+    <string name="video">[视频消息]</string>
+    <string name="file">[文件消息]</string>
+    <string name="voice_call">[语音通话]</string>
+    <string name="chat_tool_photo">图片</string>
+    <string name="chat_tool_camera">拍摄</string>
+    <string name="chat_tool_location">位置</string>
+    <string name="chat_tool_file">文件</string>
+    <string name="chat_tool_audio">语音电话</string>
+    <string name="chat_tool_video">视频通话</string>
+    <string name="btn_press_to_speak">按住说话</string>
+    <string name="btn_send">发送</string>
 </resources>
