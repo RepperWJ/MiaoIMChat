@@ -14,14 +14,21 @@ import android.widget.TextView;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMGroup;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.util.DateUtils;
+import com.sky_wf.chinachat.MyApplication;
 import com.sky_wf.chinachat.R;
+import com.sky_wf.chinachat.chat.entity.User;
 import com.sky_wf.chinachat.chat.listener.OnItemClickListener;
+import com.sky_wf.chinachat.chat.listener.QueryCallBackListener;
+import com.sky_wf.chinachat.chat.manager.ChatManager;
+import com.sky_wf.chinachat.chat.utils.SmileUtils;
 
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * @Date : 2018/6/6
@@ -32,13 +39,15 @@ public class MsgListAdapter extends RecyclerView.Adapter<MsgListAdapter.MsgListI
 {
     private OnItemClickListener clickListener;
     private List<EMConversation> conversationList;
-    private OnItemClickListener listener;
+    private static OnItemClickListener listener;
     private Context context;
+    private ChatManager chatManager;
 
     public MsgListAdapter(Context context, List<EMConversation> conversationList)
     {
         this.context = context;
         this.conversationList = conversationList;
+        chatManager = ChatManager.getInstance();
     }
 
     public void setOnItemClickListener(OnItemClickListener listener)
@@ -56,42 +65,74 @@ public class MsgListAdapter extends RecyclerView.Adapter<MsgListAdapter.MsgListI
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MsgListItemViewHolder msgListItemViewHolder, int i)
+    public void onBindViewHolder(@NonNull final MsgListItemViewHolder itemViewHolder, int i)
     {
         EMConversation conversation = conversationList.get(i);
-        Log.d("wftt>>>>>>", conversation.conversationId());
+        final String chat_ID = conversation.conversationId();
+        Log.d("wftt>>>>>>", chat_ID);
         if (conversation.isGroup())
         {
-            EMGroup group = EMClient.getInstance().groupManager()
-                    .getGroup(conversation.conversationId());
-            Log.d("wftt>>>>>>", group.getGroupId() + "<<>>" + group.getGroupName());
+            itemViewHolder.holder_item_avatar.setImageResource(R.drawable.defult_group);
+            EMGroup group = EMClient.getInstance().groupManager().getGroup(chat_ID);
+            if (null != group)
+            {
+                itemViewHolder.holder_txt_name.setText(group.getGroupName());
+            } else
+            {
+
+            }
+
+            Log.d("wftt>>>>>>", chat_ID + "<<>>" + group.getGroupName());
         } else
         {
+            chatManager.QueryUser(chat_ID);
+            chatManager.setQueryUserListener(new QueryCallBackListener<User>()
+            {
+                @Override
+                public void onSucess(User user)
+                {
+                    MyApplication.userMap.put(chat_ID, user);
+                    itemViewHolder.holder_txt_name.setText(user.getNickName());
+
+                }
+
+                @Override
+                public void onFailed()
+                {
+
+                }
+            });
 
         }
 
-        if (null != listener)
+        int unreadMsgCount = chatManager.getUnReadMsgCount(conversation);
+        if (unreadMsgCount > 0)
         {
-            msgListItemViewHolder.itemView.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    int pos = msgListItemViewHolder.getLayoutPosition();
-                    listener.onClick(msgListItemViewHolder.itemView, pos);
-                }
-            });
+            itemViewHolder.holder_txt_unread.setVisibility(View.VISIBLE);
+            itemViewHolder.holder_txt_unread.setText(String.valueOf(unreadMsgCount));
+        } else
+        {
+            itemViewHolder.holder_txt_unread.setVisibility(View.INVISIBLE);
+        }
 
-            msgListItemViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener()
+        int msgCount = chatManager.getMsgCount(conversation);
+        if (msgCount > 0)
+        {
+            EMMessage lastMsg = conversation.getLastMessage();
+            itemViewHolder.holder_txt_connent.setText(SmileUtils.getSmiledText(context,
+                    chatManager.getLastMessageDigest(lastMsg, context)));
+            itemViewHolder.holder_txt_time
+                    .setText(DateUtils.getTimestampString(new Date(lastMsg.getMsgTime())));
+            if (lastMsg.status() == EMMessage.Status.SUCCESS)
             {
-                @Override
-                public boolean onLongClick(View v)
-                {
-                    int pos = msgListItemViewHolder.getLayoutPosition();
-                    listener.onLongClick(msgListItemViewHolder.itemView, pos);
-                    return false;
-                }
-            });
+                itemViewHolder.holder_txt_state.setText("送达");
+            } else if (lastMsg.status() == EMMessage.Status.FAIL)
+            {
+                itemViewHolder.holder_txt_state.setText("失败");
+            } else if (lastMsg.status() == EMMessage.Status.INPROGRESS)
+            {
+
+            }
         }
 
     }
@@ -103,6 +144,7 @@ public class MsgListAdapter extends RecyclerView.Adapter<MsgListAdapter.MsgListI
     }
 
     public static class MsgListItemViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener, View.OnLongClickListener
     {
         @BindView(R.id.connact_item_avatar)
         ImageView holder_item_avatar;
@@ -123,7 +165,23 @@ public class MsgListAdapter extends RecyclerView.Adapter<MsgListAdapter.MsgListI
         {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
+        @Override
+        public void onClick(View v)
+        {
+            int pos = this.getLayoutPosition();
+            listener.onClick(this.itemView, pos);
+        }
+
+        @Override
+        public boolean onLongClick(View v)
+        {
+            int pos = this.getLayoutPosition();
+            listener.onLongClick(this.itemView, pos);
+            return false;
+        }
     }
 }

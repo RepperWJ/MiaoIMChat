@@ -49,7 +49,6 @@ public class Fragment_Msg extends BaseFragment implements OnItemClickListener
     private MsgListAdapter msgListAdapter;
     private List<EMConversation> conversationList;
 
-
     @Override
     public void onAttach(Context context)
     {
@@ -63,6 +62,8 @@ public class Fragment_Msg extends BaseFragment implements OnItemClickListener
         super.onCreate(savedInstanceState);
         context = getActivity();
         conversationList = new ArrayList<>();
+        msgListAdapter = new MsgListAdapter(context, conversationList);
+        msgListAdapter.setOnItemClickListener(this);
         Debugger.d(TAG, "<<onCreate>>");
     }
 
@@ -74,7 +75,7 @@ public class Fragment_Msg extends BaseFragment implements OnItemClickListener
         Debugger.d(TAG, "<<onCreateView>>");
         View view = inflater.inflate(R.layout.fragment_msg, container, false);
         unbinder = ButterKnife.bind(this, view);
-        super.onCreateView(inflater,container,savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
         return view;
     }
 
@@ -90,7 +91,7 @@ public class Fragment_Msg extends BaseFragment implements OnItemClickListener
     {
         super.onResume();
         Debugger.d(TAG, "<<onResume>>");
-        refresh();
+
     }
 
     @Override
@@ -116,30 +117,34 @@ public class Fragment_Msg extends BaseFragment implements OnItemClickListener
     }
 
     @Override
-    protected void initView() {
+    protected void initView()
+    {
         LinearLayoutManager manager = new LinearLayoutManager(context);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         msgList.setLayoutManager(manager);
-//        msgList.setAdapter(msgListAdapter);
+        // msgList.setAdapter(msgListAdapter);
+        // lineaNetError.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.chat_net_error)
-    public void onViewClicked() {
-        Debugger.d(TAG,"lineaNetError被点击");
+    public void onViewClicked()
+    {
+        ChatManager.getInstance().openSetNetWork(context);
     }
 
     private void initConnactList()
     {
         conversationList.clear();
         conversationList.addAll(ChatManager.getInstance().loadConversationWithRecentChat());
-        if(conversationList!=null&&conversationList.size()!=0)
+        if (conversationList != null && conversationList.size() != 0)
         {
             tv_no_chat.setVisibility(View.INVISIBLE);
-            msgListAdapter = new MsgListAdapter(context,conversationList);
-            //添加一个公众号
-            Debugger.d(TAG,"<<loadConversationWithRecentChat---initConnactList当前用户的会话总数>>"+conversationList.size());
+            // 添加一个公众号
+            Debugger.d(TAG, "<<loadConversationWithRecentChat---initConnactList当前用户的会话总数>>"
+                    + conversationList.size());
             msgList.setAdapter(msgListAdapter);
-        }else{
+        } else
+        {
             tv_no_chat.setVisibility(View.VISIBLE);
         }
     }
@@ -149,15 +154,17 @@ public class Fragment_Msg extends BaseFragment implements OnItemClickListener
         initConnactList();
     }
 
-
     @Override
-    public void onClick(View view, int position) {
-        Intent intent = new Intent(context,ChatActivity.class);
-        startActivity(intent);
+    public void onClick(View view, int position)
+    {
+        Debugger.d("wftt", "onClick------>>" + position);
+        EMConversation conversation = conversationList.get(position);
+        ChatManager.getInstance().gtChat(context,conversation);
     }
 
     @Override
-    public void onLongClick(View view, int position) {
-
+    public void onLongClick(View view, int position)
+    {
+        Debugger.d("wftt", "onLongClick------>>" + position);
     }
 }

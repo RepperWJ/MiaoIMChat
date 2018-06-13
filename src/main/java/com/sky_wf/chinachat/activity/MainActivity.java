@@ -50,6 +50,17 @@ public class MainActivity extends BaseFragmentActivity
         initTabView();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refresh();
+    }
+
+    private void refresh() {
+        updateUnreadLabel();
+        msg_fragment.refresh();
+    }
+
     private void initViews()
     {
         img_right.setVisibility(View.VISIBLE);
@@ -60,7 +71,7 @@ public class MainActivity extends BaseFragmentActivity
     private void findViewById()
     {
         img_right = (ImageView) findViewById(R.id.img_right);
-        txt_title = (TextView) findViewById(R.id.txt_left);
+        txt_title = (TextView) findViewById(R.id.txt_left_title);
     }
 
     private void initTabView()
@@ -94,7 +105,6 @@ public class MainActivity extends BaseFragmentActivity
                 .add(R.id.frame_container, discover_fragment)
                 .add(R.id.frame_container, profile_fragment).hide(friend_fragment)
                 .hide(profile_fragment).hide(discover_fragment).show(msg_fragment).commit();
-        updateUnreadLabel();
 
     }
 
@@ -163,7 +173,7 @@ public class MainActivity extends BaseFragmentActivity
                 // FragmentManager manager = getSupportFragmentManager();
                 // manager.popBackStack();
                 // return true;
-                EMClient.getInstance().logout(true);
+//                EMClient.getInstance().logout(true);
                 MyApplication.exitActivity();
 
         }

@@ -16,6 +16,7 @@ import com.sky_wf.chinachat.R;
 import com.sky_wf.chinachat.activity.base.BaseActivity;
 import com.sky_wf.chinachat.chat.listener.CallBakcListener;
 import com.sky_wf.chinachat.chat.manager.ChatManager;
+import com.sky_wf.chinachat.utils.Constansts;
 import com.sky_wf.chinachat.utils.SharedUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -90,7 +91,7 @@ public class EditUserNameActivity extends BaseActivity implements CallBakcListen
 
     @Override
     public void onSuccess() {
-        SharedUtils.getInstance(context).putString("username",
+        SharedUtils.getInstance(context).putString(Constansts.USERNAME,
                 etUsername.getText().toString());
         Observable.timer(1,TimeUnit.SECONDS).subscribe(new Action1<Long>() {
             @Override
