@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.sky_wf.chinachat.MyApplication;
 import com.sky_wf.chinachat.R;
 import com.sky_wf.chinachat.activity.base.BaseActivity;
 import com.sky_wf.chinachat.chat.utils.ChatConstants;
@@ -111,6 +114,18 @@ public class ChatActivity extends BaseActivity
         context = this;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MyApplication.acquireWakeLock();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApplication.releaseWakeLock();
+    }
+
     private void getIntentData()
     {
         Intent intent = getIntent();
@@ -152,7 +167,7 @@ public class ChatActivity extends BaseActivity
     @Override
     protected void setListener()
     {
-
+        etMessage.addTextChangedListener(new pasteEditTextWatcher());
     }
 
     @OnClick({ R.id.img_back, R.id.img_right, R.id.btn_keyboard_mode, R.id.btn_press_to_speak,
@@ -313,5 +328,31 @@ public class ChatActivity extends BaseActivity
         ivEmotionsEnable.setVisibility(View.GONE);
         chatFaceContainer.setVisibility(View.GONE);
 
+    }
+
+    class pasteEditTextWatcher implements TextWatcher
+    {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if(!TextUtils.isEmpty(s))
+            {
+                btnMore.setVisibility(View.GONE);
+                btnSend.setVisibility(View.VISIBLE);
+            }else {
+                btnSend.setVisibility(View.GONE);
+                btnMore.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
     }
 }
