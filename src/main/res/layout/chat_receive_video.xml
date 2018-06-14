@@ -35,7 +35,7 @@
             android:layout_marginLeft="15dp"
             android:layout_toRightOf="@id/iv_userhead" />
         <RelativeLayout
-            android:id="@+id/rl_rcv_layout"
+            android:id="@+id/row_recv_pic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="17dp"
