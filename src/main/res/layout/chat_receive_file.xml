@@ -7,18 +7,17 @@
 
     <TextView
         android:id="@+id/time_stamp"
-        style="@style/chat_time_stampe_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="" />
-
+        android:text=""
+        style="@style/chat_time_stampe_style"
+        />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:paddingRight="20dp">
-
         <ImageView
             android:id="@+id/iv_user_head"
             android:layout_width="50dp"
@@ -27,97 +26,96 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/head1" />
-
+            android:src="@drawable/head1"
+            />
         <TextView
             android:id="@+id/tv_chat_usename"
             style="@style/chat_time_stampe_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:layout_toRightOf="@id/iv_user_head" />
-
-        <LinearLayout
-            android:id="@+id/linear_chat_video_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_chat_usename"
-            android:layout_marginLeft="5dp"
-            android:layout_toLeftOf="@id/pb_sending"
             android:layout_toRightOf="@id/iv_user_head"
-            android:background="@drawable/bg_chat_content"
-            android:orientation="horizontal"
-            android:paddingTop="5dp"
-            android:paddingRight="17dp"
-            android:paddingBottom="5dp">
+            />
+      <LinearLayout
+          android:id="@+id/linear_chat_video_container"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_below="@id/tv_chat_usename"
+          android:layout_toRightOf="@id/iv_user_head"
+          android:layout_marginLeft="5dp"
+          android:paddingRight="17dp"
+          android:paddingTop="5dp"
+          android:paddingBottom="5dp"
+          android:background="@drawable/bg_chat_content">
+          <ImageView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_margin="5dp"
+              android:scaleType="fitXY"
+              android:src="@drawable/chat_item_file"
+              />
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:layout_marginLeft="7dp"
+              android:layout_gravity="center_vertical"
+              android:gravity="center_vertical">
+              <TextView
+                  android:id="@+id/tv_rec_filename"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="眉飞色舞.mpr"
+                  android:textSize="15sp"
+                  android:gravity="center"
+                  android:textColor="@color/black"
+                  />
+              <RelativeLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="3dp"
+                  >
+              <TextView
+                  android:id="@+id/tv_rec_filesize"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="3MB"
+                  android:textSize="15sp"
+                  android:gravity="center"
+                  android:layout_alignParentLeft="true"
+                  android:layout_marginLeft="3dp"
+                  android:layout_centerInParent="true"
+                  android:textColor="@color/black"
+                  />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/chat_item_file" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="7dp"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_rec_filename"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="眉飞色舞.mpr"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp">
-
-                    <TextView
-                        android:id="@+id/tv_rec_filesize"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerInParent="true"
-                        android:layout_marginLeft="3dp"
-                        android:gravity="center"
-                        android:text="3MB"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:id="@+id/tv_rec_file_state"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerInParent="true"
-                        android:gravity="center"
-                        android:text="未下载"
-                        android:textColor="@color/blue1"
-                        android:textSize="14sp" />
-                </RelativeLayout>
-            </LinearLayout>
-        </LinearLayout>
+                  <TextView
+                      android:id="@+id/tv_rec_file_state"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="未下载"
+                      android:textSize="15sp"
+                      android:gravity="center"
+                      android:layout_alignParentRight="true"
+                      android:layout_marginRight="3dp"
+                      android:layout_centerInParent="true"
+                      android:textColor="@color/blue1"
+                      />
+              </RelativeLayout>
+          </LinearLayout>
+      </LinearLayout>
 
         <ProgressBar
             android:id="@+id/pb_sending"
-            style="@android:style/Widget.ProgressBar.Small"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:layout_toRightOf="@id/iv_unread_voice"
-            android:indeterminateBehavior="repeat"
-            android:indeterminateDrawable="@drawable/refresh_image"
+            android:indeterminateDrawable="@drawable/small_progress"
             android:indeterminateOnly="true"
-            android:visibility="gone" />
+            android:indeterminateBehavior="repeat"
+            android:layout_toRightOf="@+id/linear_chat_video_container"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:visibility="visible" />
     </RelativeLayout>
 
 </LinearLayout>
